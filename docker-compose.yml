@@ -1,0 +1,17 @@
+services:
+  backend:
+    build: ./backend/
+    networks:
+      - teste-shopper
+    ports:
+      - 8080:8080
+    env_file:
+      - ./.env
+    restart: unless-stopped
+
+volumes:
+  backend:
+networks:
+ teste-shopper:
+    name: teste-shopper
+    driver: bridge
