@@ -7,7 +7,8 @@ import helmet from "helmet";
 import { config } from "@infrastructure/config/config";
 
 export class ServerApplication {
-  private readonly port: number | string = config().ApiServerConfig.API_PORT;
+  private readonly port: number =
+    Number(config().ApiServerConfig.API_PORT || process.env.PORT) || 8080;
 
   public async run(): Promise<void> {
     const app: NestExpressApplication =
