@@ -1,4 +1,3 @@
-import { CoreApiResponse } from "@core/common/api/CoreApiResponse";
 import {
   CallHandler,
   ExecutionContext,
@@ -7,16 +6,12 @@ import {
   NestInterceptor,
 } from "@nestjs/common";
 import { Request } from "express";
-import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 import * as fsPromise from "fs/promises";
 
 @Injectable()
 export class NestHttpLoggingInterceptor implements NestInterceptor {
-  public intercept(
-    context: ExecutionContext,
-    next: CallHandler
-  ): Observable<CoreApiResponse<void>> {
+  public intercept(context: ExecutionContext, next: CallHandler) {
     const request: Request = context.switchToHttp().getRequest();
     const requestStartDate: number = Date.now();
 
