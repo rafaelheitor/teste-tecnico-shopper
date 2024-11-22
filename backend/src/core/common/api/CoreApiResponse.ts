@@ -1,19 +1,21 @@
-import { Nullable } from "@core/common/type/CommonTypes";
-
-export class CoreApiResponse<TData> {
+export class CoreApiResponse<TData extends Record<string, any>> {
   public readonly code: number;
   public readonly message: string;
   public readonly success: boolean;
-  public readonly data: Nullable<TData>;
 
   private constructor(code?: number, message?: string, data?: TData) {
-    this.code = code;
-    this.message = message;
-    this.data = data || null;
+    this.code = code || 200;
+    this.message = message || "Operação realizada com sucesso";
     this.success = true;
+
+    if (data) {
+      Object.assign(this, data);
+    }
   }
 
-  public static success<TData>(data?: TData): CoreApiResponse<TData> {
+  public static success<TData extends Record<string, any>>(
+    data?: TData
+  ): CoreApiResponse<TData> {
     return new CoreApiResponse(200, "Operação realizada com sucesso", data);
   }
 }
