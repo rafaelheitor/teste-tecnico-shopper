@@ -1,0 +1,124 @@
+import { Entity } from "@core/common/entity/Entity";
+import { IsNumber, IsString, IsDate, IsOptional } from "class-validator";
+
+export class Ride extends Entity<number> {
+  private origin: {
+    latitude: number;
+    longitude: number;
+  };
+
+  private destination: {
+    latitude: number;
+    longitude: number;
+  };
+
+  @IsNumber()
+  private distance: number;
+
+  @IsString()
+  private duration: string;
+
+  private options?: RideDriverOptions[];
+
+  @IsDate()
+  @IsOptional()
+  private date?: Date;
+
+  @IsNumber()
+  @IsOptional()
+  private value?: number;
+
+  private driver: { id: number; name: string };
+
+  public getOrigin() {
+    return this.origin;
+  }
+
+  public getDestination() {
+    return this.destination;
+  }
+
+  public getDistance() {
+    return this.distance;
+  }
+
+  public getDuration() {
+    return this.duration;
+  }
+
+  public getDate() {
+    return this.date;
+  }
+
+  public getValue() {
+    return this.value;
+  }
+
+  public getDriver() {
+    return this.driver;
+  }
+
+  public getOptions() {
+    return this.options;
+  }
+
+  private constructor(payload: CreateRideEntityPayload) {
+    super();
+    this.id = payload.id;
+    this.origin = payload.origin;
+    this.destination = payload.destination;
+    this.distance = payload.distance;
+    this.duration = payload.duration;
+    this.options = payload.options;
+    this.date = payload.date ? new Date(payload.date) : undefined;
+    this.driver = payload.driver;
+    this.value = payload.value;
+  }
+
+  public static async fromPayload(
+    payload: CreateRideEntityPayload
+  ): Promise<Ride> {
+    const entity = new Ride(payload);
+    await entity.validate();
+    return entity;
+  }
+
+  public calulateCost(costPerKm: number) {
+    const value = this.distance * costPerKm;
+
+    this.options = this.options.map((item) => ({
+      ...item,
+      value,
+    }));
+  }
+}
+
+export type CreateRideEntityPayload = {
+  id?: number;
+  origin: {
+    latitude: number;
+    longitude: number;
+  };
+  destination: {
+    latitude: number;
+    longitude: number;
+  };
+  distance: number;
+  duration: string;
+  options?: RideDriverOptions[];
+  date?: Date;
+  driver?: { id: number; name: string };
+  value?: number;
+};
+
+export type RideDriverOptions = {
+  id: number;
+  name: string;
+  description: string;
+  vehicle: string;
+  review: {
+    rating: number;
+    comment: string;
+  };
+  value?: number;
+};
