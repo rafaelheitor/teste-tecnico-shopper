@@ -53,7 +53,22 @@ describe("EstimateRideService", () => {
 
   test("Should estimate ride, by getting the necessary user info, available drivers that meets the distance criteria and return info about the ride", async () => {
     const mockRideEntity = await CreateRideEntityFixture.newEstimateRide();
-    const expectedUsecaseDTO = RideUsecaseDTO.fromEntity(mockRideEntity);
+    const mockRouteResponse = {
+      routes: [
+        {
+          distanceMeters: 2125,
+          duration: "395s",
+          polyline: {
+            encodedPolyline:
+              "vs_iAl~miFp@{@vAwAvFmGTL\\b@\\TTVlLfJhCrB~ArAvA`AxI~GPZTXNVPfANdBEjAw@|FxGdAvARt@aGjBmM",
+          },
+        },
+      ],
+    };
+    const expectedUsecaseDTO = RideUsecaseDTO.fromEntity(
+      mockRideEntity,
+      mockRouteResponse
+    );
 
     const mockOriginLatLong = mockRideEntity.getOrigin();
     const mockDestinationLatLong = mockRideEntity.getDestination();
@@ -68,6 +83,7 @@ describe("EstimateRideService", () => {
       .mockResolvedValue({
         distance: 2000,
         duration: "360s",
+        routeResponse: mockRouteResponse,
       });
 
     const mockDriver = await CreateDriverEntityFixture.new();

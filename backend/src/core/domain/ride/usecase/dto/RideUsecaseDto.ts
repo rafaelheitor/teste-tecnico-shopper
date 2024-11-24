@@ -35,9 +35,12 @@ export class RideUsecaseDTO {
   @Expose()
   options: RideDriverOptions[];
 
-  public static fromEntity(payload: Ride) {
+  routeResponse: object;
+
+  public static fromEntity(payload: Ride, routeResponse?: object) {
     const dto = plainToInstance(RideUsecaseDTO, payload);
 
+    dto.routeResponse = routeResponse;
     for (const [key, value] of Object.entries(dto)) {
       if (value == undefined) delete dto[key];
     }

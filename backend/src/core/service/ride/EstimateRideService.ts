@@ -18,7 +18,7 @@ export class EstimateRideService implements EstimateRideUsecase {
       port.destination
     );
 
-    const { distance, duration } =
+    const { distance, duration, routeResponse } =
       await this.routesGateway.getDistanceAndDuration(origin, destination);
 
     const driverList = await this.getDriverListUsecase.execute({
@@ -40,6 +40,6 @@ export class EstimateRideService implements EstimateRideUsecase {
       })),
     });
 
-    return RideUsecaseDTO.fromEntity(ride);
+    return RideUsecaseDTO.fromEntity(ride, routeResponse);
   }
 }

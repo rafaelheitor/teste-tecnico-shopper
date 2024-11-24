@@ -4,7 +4,7 @@ export interface RoutesGatewayPort {
   getDistanceAndDuration(
     origin: LatLong,
     destination: LatLong
-  ): Promise<{ distance: number; duration: string }>;
+  ): Promise<{ distance: number; duration: string; routeResponse?: object }>;
 }
 
 export type LatLong = { latitude: number; longitude: number };
