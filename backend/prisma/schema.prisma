@@ -1,0 +1,18 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = "postgres://postgres:123@localhost:5432/teste-shopper"
+}
+
+model driver {
+    id               Int    @unique @default(autoincrement())
+    name             String
+    description      String
+    vehicle          String
+    review           Json
+    tax              Int
+    minimun_distance Int
+}

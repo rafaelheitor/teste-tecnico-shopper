@@ -1,5 +1,6 @@
 services:
   backend:
+    container_name: 'backend'  
     build: ./backend/
     networks:
       - teste-shopper
@@ -8,9 +9,25 @@ services:
     env_file:
       - ./.env
     restart: unless-stopped
+  
+  db:
+    image: postgres:13-alpine
+    container_name: teste_shopper_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=teste-shopper
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - teste-shopper
+    ports:
+      - 5432:5432
 
 volumes:
   backend:
+  postgres_data:
+
 networks:
  teste-shopper:
     name: teste-shopper
