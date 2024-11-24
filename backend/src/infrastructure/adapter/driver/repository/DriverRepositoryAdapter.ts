@@ -9,7 +9,7 @@ export class DriverRepositoryAdapter implements DriverRepositoryPort {
     const result = await this.prismaService.driver.findMany({
       where: {
         minimun_distance: {
-          lte: distance,
+          lte: distance / 1000,
         },
       },
       orderBy: { minimun_distance: "asc" },

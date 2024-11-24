@@ -35,7 +35,6 @@ describe("DriverRepositoryAdapter", () => {
     );
   });
   test("getDriverByMinimunDistance", async () => {
-    const result = await driverRepository.getDriverByMinimunDistance(1);
     const mockDriverPayload = {
       id: 1,
       name: "Homer Simpson",
@@ -47,13 +46,15 @@ describe("DriverRepositoryAdapter", () => {
         comment:
           "Motorista simpático, mas errou o caminho 3 vezes. O carro cheira a donuts.",
       },
-      tax: 2,
+      tax: 2.5,
       minimun_distance: 1,
     };
 
     jest
       .spyOn(prismaService.driver, "findMany")
       .mockResolvedValue([mockDriverPayload]);
+
+    const result = await driverRepository.getDriverByMinimunDistance(1);
 
     const expectedDriver = await Driver.fromPayload({
       id: mockDriverPayload.id,
