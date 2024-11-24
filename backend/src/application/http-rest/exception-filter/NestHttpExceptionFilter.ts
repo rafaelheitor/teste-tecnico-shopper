@@ -4,7 +4,6 @@ import {
   ExceptionFilter,
   HttpException,
   Logger,
-  UnauthorizedException,
 } from "@nestjs/common";
 import { Request, Response } from "express";
 import { CoreErrorResponse } from "@core/common/api/CoreErrorResponse";
@@ -38,7 +37,9 @@ export class NestHttpExceptionFilter implements ExceptionFilter {
     errorResponse = this.handleNestError(error, errorResponse);
     errorResponse = this.handleCoreException(error, errorResponse);
 
-    response.json(errorResponse);
+    const statusCode = this.getHttpStatusCode(error);
+
+    response.status(statusCode).json(errorResponse);
   }
 
   private handleNestError(
@@ -78,5 +79,17 @@ export class NestHttpExceptionFilter implements ExceptionFilter {
       code: codeDescription,
       errorCode: codeDescription.error_code,
     });
+  }
+
+  private getHttpStatusCode(error: Error): number {
+    if (error instanceof HttpException) {
+      return error.getStatus();
+    }
+
+    if (error instanceof Exception) {
+      return error.code || 500;
+    }
+
+    return 500;
   }
 }
