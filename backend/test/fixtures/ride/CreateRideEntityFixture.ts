@@ -3,17 +3,13 @@ import { Ride } from "@core/domain/ride/entity/Ride";
 export class CreateRideEntityFixture {
   public static newEstimateRide() {
     return Ride.fromPayload({
-      id: 1,
       origin: {
         latitude: -12.12759382680339,
         longitude: -38.41508699956368,
       },
-      destination: {
-        latitude: -12.126549,
-        longitude: -38.42007,
-      },
-      distance: 2,
-      duration: "6 minutos",
+      destination: { latitude: -12.1381339, longitude: -38.4179707 },
+      distance: 2000,
+      duration: "6m",
       options: [
         {
           id: 1,

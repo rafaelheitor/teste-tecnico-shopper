@@ -82,15 +82,6 @@ export class Ride extends Entity<number> {
     await entity.validate();
     return entity;
   }
-
-  public calulateCost(costPerKm: number) {
-    const value = this.distance * costPerKm;
-
-    this.options = this.options.map((item) => ({
-      ...item,
-      value,
-    }));
-  }
 }
 
 export type CreateRideEntityPayload = {
