@@ -16,7 +16,6 @@ export class ServerApplication {
 
     app.use(helmet());
     app.enableCors({ origin: "*" });
-    app.setGlobalPrefix("/api/v1");
 
     this.buildDocumentation(app);
 

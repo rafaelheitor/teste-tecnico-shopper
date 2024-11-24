@@ -7,7 +7,7 @@ import {
   RoutesGatewayPort,
 } from "@core/domain/ride/port/gateway/RoutesGatewayPort";
 import { AxiosHttpClient } from "@infrastructure/adapter/HttpClient/AxiosHttpClient";
-import { RoutesGatewayAdapter } from "@infrastructure/adapter/ride/RideGatewayAdapter";
+import { RoutesGatewayAdapter } from "@infrastructure/adapter/ride/gateway/RideGatewayAdapter";
 import { Test, TestingModule } from "@nestjs/testing";
 
 describe("RoutesGatewayAdapter", () => {

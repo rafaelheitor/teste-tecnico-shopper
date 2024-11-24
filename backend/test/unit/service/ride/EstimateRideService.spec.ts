@@ -7,7 +7,7 @@ import { RideUsecaseDTO } from "@core/domain/ride/usecase/dto/RideUsecaseDto";
 import { EstimateRideUsecase } from "@core/domain/ride/usecase/EstimateRideUsecase";
 import { GetDriverListService } from "@core/service/driver/GetDriverListService";
 import { EstimateRideService } from "@core/service/ride/EstimateRideService";
-import { RoutesGatewayAdapter } from "@infrastructure/adapter/ride/RideGatewayAdapter";
+import { RoutesGatewayAdapter } from "@infrastructure/adapter/ride/gateway/RideGatewayAdapter";
 import { Test, TestingModule } from "@nestjs/testing";
 import { CreateDriverEntityFixture } from "@test/fixtures/driver/CreateDriverEntityFixture";
 import { CreateRideEntityFixture } from "@test/fixtures/ride/CreateRideEntityFixture";
