@@ -1,16 +1,12 @@
 FROM node:20-alpine AS build
 WORKDIR /app
-COPY package*.json ./ 
+RUN addgroup -S app && adduser -S -G app app
+COPY package*.json prisma/ ./ 
 RUN npm ci
 COPY . ./
-RUN npm run build
-
-FROM node:20-alpine AS production
-WORKDIR /app
-RUN addgroup -S app && adduser -S -G app app
-
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/dist ./dist
+RUN chmod +x ./docker-entrypoint.sh
+RUN npm run build \
+    npx prisma generate
 
 RUN apk add --no-cache tzdata && \
     cp /usr/share/zoneinfo/Brazil/East /etc/localtime && \
@@ -19,4 +15,3 @@ RUN apk add --no-cache tzdata && \
     chown app dist/log.txt
 USER app
 EXPOSE 8080
-CMD ["node", "dist/main"]

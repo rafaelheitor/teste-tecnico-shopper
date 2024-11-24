@@ -9,10 +9,13 @@ services:
     env_file:
       - ./.env
     restart: unless-stopped
+    depends_on:
+      - db
+    entrypoint: ./docker-entrypoint.sh
   
   db:
     image: postgres:13-alpine
-    container_name: teste_shopper_db
+    container_name: db
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123
