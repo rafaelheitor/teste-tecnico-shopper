@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
     provider = "postgresql"
-    url      = "postgres://postgres:123@localhost:5432/teste-shopper"
+    url      = "postgres://postgres:123@teste_shopper_db:5432/teste-shopper"
 }
 
 model driver {
