@@ -23,6 +23,12 @@ export class Code {
     message: "Motorista não encontrado",
   };
 
+  public static NO_RIDES_FOUND: CodeDescription = {
+    error_code: "NO_RIDES_FOUND",
+    code: 404,
+    message: "Nenhum registro encontrado",
+  };
+
   public static INVALID_DISTANCE: CodeDescription = {
     error_code: "INVALID_DISTANCE",
     code: 406,
