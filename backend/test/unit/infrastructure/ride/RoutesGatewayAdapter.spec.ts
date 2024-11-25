@@ -27,7 +27,6 @@ describe("RoutesGatewayAdapter", () => {
           useClass: AxiosHttpClient,
         },
       ],
-      imports: [InfrastructureModule],
     }).compile();
 
     routesGateway = module.get<RoutesGatewayPort>(
@@ -37,10 +36,6 @@ describe("RoutesGatewayAdapter", () => {
     httpClient = module.get<HttpClient>(InfrastructureDITokens.HttpClient);
   });
   test("getLatLongFromAddress method", async () => {
-    const result: LatLong = await routesGateway.getLatLongFromAddress(
-      "Rua Elvira Dorea, centro, Alagoinhas"
-    );
-
     const response = {
       statusCode: 200,
       body: {
@@ -56,6 +51,10 @@ describe("RoutesGatewayAdapter", () => {
     };
 
     jest.spyOn(httpClient, "request").mockResolvedValue(response);
+
+    const result: LatLong = await routesGateway.getLatLongFromAddress(
+      "Rua Elvira Dorea, centro, Alagoinhas"
+    );
 
     expect(result).toBeDefined();
     expect(result).toEqual({
