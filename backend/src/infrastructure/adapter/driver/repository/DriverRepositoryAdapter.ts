@@ -22,6 +22,16 @@ export class DriverRepositoryAdapter implements DriverRepositoryPort {
     return mappedResult;
   }
 
+  async getById(id: number): Promise<Driver> {
+    const result = await this.prismaService.driver.findUnique({
+      where: { id },
+    });
+
+    if (!result) return undefined;
+
+    return this.toDomainModel(result);
+  }
+
   private toDomainModel(payload: SavedDriver) {
     return Driver.fromPayload({
       id: payload.id,

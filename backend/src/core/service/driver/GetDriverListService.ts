@@ -1,4 +1,3 @@
-import { Driver } from "@core/domain/driver/entity/Driver";
 import { DriverRepositoryPort } from "@core/domain/driver/port/repository/DriverRepositoryPort";
 import { DriverUsecaseDTO } from "@core/domain/driver/port/usecase/dto/DriverUsecaseDTO";
 import { GetDriverListPort } from "@core/domain/driver/port/usecase/GetDriverListPort";

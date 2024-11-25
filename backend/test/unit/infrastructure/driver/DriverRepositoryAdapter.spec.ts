@@ -69,4 +69,48 @@ describe("DriverRepositoryAdapter", () => {
     expect(result).toBeDefined();
     expect(result[0]).toStrictEqual(expectedDriver);
   });
+
+  test("Should return driver with given id", async () => {
+    const mockDriverPayload = {
+      id: 1,
+      name: "Homer Simpson",
+      description:
+        "Olá! Sou o Homer, seu motorista camarada! Relaxe e aproveite o passeio, com direito a rosquinhas e boas risadas (e talvez alguns desvios).",
+      vehicle: "Plymouth Valiant 1973 rosa e enferrujado",
+      review: {
+        rating: 2,
+        comment:
+          "Motorista simpático, mas errou o caminho 3 vezes. O carro cheira a donuts.",
+      },
+      tax: 2.5,
+      minimun_distance: 1,
+    };
+
+    jest
+      .spyOn(prismaService.driver, "findUnique")
+      .mockResolvedValue(mockDriverPayload);
+
+    const result = await driverRepository.getById(1);
+
+    const expectedDriver = await Driver.fromPayload({
+      id: mockDriverPayload.id,
+      name: mockDriverPayload.name,
+      description: mockDriverPayload.description,
+      vehicle: mockDriverPayload.vehicle,
+      review: mockDriverPayload.review,
+      minimunDistance: mockDriverPayload.minimun_distance,
+      tax: mockDriverPayload.tax,
+    });
+
+    expect(result).toBeDefined();
+    expect(result).toStrictEqual(expectedDriver);
+  });
+
+  test("Should return undefined when driver was not found", async () => {
+    jest.spyOn(prismaService.driver, "findUnique").mockResolvedValue(undefined);
+
+    const result = await driverRepository.getById(1);
+
+    expect(result).not.toBeDefined();
+  });
 });
