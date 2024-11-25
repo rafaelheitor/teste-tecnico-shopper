@@ -46,10 +46,25 @@ async function insertDrivers() {
   ];
 
   for (const driver of drivers) {
-    await prisma.driver.create({ data: driver });
+    const existingDriver = await prisma.driver.findFirst({
+      where: { name: driver.name },
+    });
+
+    if (!existingDriver) {
+      await prisma.driver.create({ data: driver });
+      console.log(`Driver "${driver.name}" inserted successfully.`);
+    } else {
+      console.log(`Driver "${driver.name}" already exists. Skipping...`);
+    }
   }
 }
 
 (async () => {
-  await insertDrivers();
+  try {
+    await insertDrivers();
+  } catch (error) {
+    console.error("Error seeding drivers:", error);
+  } finally {
+    await prisma.$disconnect();
+  }
 })();
