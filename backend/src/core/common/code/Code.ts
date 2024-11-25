@@ -25,7 +25,7 @@ export class Code {
 
   public static INVALID_DISTANCE: CodeDescription = {
     error_code: "INVALID_DISTANCE",
-    code: 404,
+    code: 406,
     message: "Quilometragem inválida para o motorista",
   };
 

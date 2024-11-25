@@ -31,18 +31,14 @@ export class CreateRideEntityFixture {
   public static newCompletedRide() {
     return Ride.fromPayload({
       id: 1,
-      origin: {
-        latitude: -12.12759382680339,
-        longitude: -38.41508699956368,
-      },
-      destination: {
-        latitude: -12.126549,
-        longitude: -38.42007,
-      },
+      origin: "Rua joão ribeiro, 100, Alagoinhas",
+      destination: "Rua barão de cotegipe, centro, Alagoinhas",
       distance: 2,
       duration: "6 minutos",
       driver: { id: 1, name: "Homer Simpson" },
       value: 5,
+      customer_id: "1",
+      date: new Date(),
     });
   }
 }

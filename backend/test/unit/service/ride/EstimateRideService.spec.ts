@@ -2,7 +2,10 @@ import { DriverDITokens } from "@core/domain/driver/di/DriverDITokens";
 import { DriverUsecaseDTO } from "@core/domain/driver/port/usecase/dto/DriverUsecaseDTO";
 import { GetDriverListUsecase } from "@core/domain/driver/usecase/GetDriverListUsecase";
 import { RideDITokens } from "@core/domain/ride/di/RideDITokens";
-import { RoutesGatewayPort } from "@core/domain/ride/port/gateway/RoutesGatewayPort";
+import {
+  LatLong,
+  RoutesGatewayPort,
+} from "@core/domain/ride/port/gateway/RoutesGatewayPort";
 import { RideUsecaseDTO } from "@core/domain/ride/usecase/dto/RideUsecaseDto";
 import { EstimateRideUsecase } from "@core/domain/ride/usecase/EstimateRideUsecase";
 import { GetDriverListService } from "@core/service/driver/GetDriverListService";
@@ -75,8 +78,8 @@ describe("EstimateRideService", () => {
 
     const getLatLongFromAddress = jest
       .spyOn(routesGateway, "getLatLongFromAddress")
-      .mockResolvedValueOnce(mockOriginLatLong)
-      .mockResolvedValueOnce(mockDestinationLatLong);
+      .mockResolvedValueOnce(mockOriginLatLong as LatLong)
+      .mockResolvedValueOnce(mockDestinationLatLong as LatLong);
 
     const getDistanceAndDuration = jest
       .spyOn(routesGateway, "getDistanceAndDuration")

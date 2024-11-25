@@ -2,15 +2,23 @@ import { Entity } from "@core/common/entity/Entity";
 import { IsNumber, IsString, IsDate, IsOptional } from "class-validator";
 
 export class Ride extends Entity<number> {
-  private origin: {
-    latitude: number;
-    longitude: number;
-  };
+  private origin:
+    | {
+        latitude: number;
+        longitude: number;
+      }
+    | string;
 
-  private destination: {
-    latitude: number;
-    longitude: number;
-  };
+  private destination:
+    | {
+        latitude: number;
+        longitude: number;
+      }
+    | string;
+
+  @IsString()
+  @IsOptional()
+  private customer_id: string;
 
   @IsNumber()
   private distance: number;
@@ -58,6 +66,10 @@ export class Ride extends Entity<number> {
     return this.driver;
   }
 
+  public getCustomerId() {
+    return this.customer_id;
+  }
+
   public getOptions() {
     return this.options;
   }
@@ -73,6 +85,7 @@ export class Ride extends Entity<number> {
     this.date = payload.date ? new Date(payload.date) : undefined;
     this.driver = payload.driver;
     this.value = payload.value;
+    this.customer_id = payload.customer_id;
   }
 
   public static async fromPayload(
@@ -86,20 +99,25 @@ export class Ride extends Entity<number> {
 
 export type CreateRideEntityPayload = {
   id?: number;
-  origin: {
-    latitude: number;
-    longitude: number;
-  };
-  destination: {
-    latitude: number;
-    longitude: number;
-  };
+  origin:
+    | {
+        latitude: number;
+        longitude: number;
+      }
+    | string;
+  destination:
+    | {
+        latitude: number;
+        longitude: number;
+      }
+    | string;
   distance: number;
   duration: string;
   options?: RideDriverOptions[];
   date?: Date;
   driver?: { id: number; name: string };
   value?: number;
+  customer_id?: string;
 };
 
 export type RideDriverOptions = {

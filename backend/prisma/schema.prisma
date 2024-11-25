@@ -16,3 +16,15 @@ model driver {
     tax              Float
     minimun_distance Int
 }
+
+model ride {
+    id          Int      @unique @default(autoincrement())
+    customer_id String
+    origin      String
+    destination String
+    distance    Int
+    duration    String
+    driver      Json
+    value       Float
+    date        DateTime @db.Timestamptz(3)
+}
