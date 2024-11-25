@@ -16,4 +16,11 @@ describe("RideUsecaseDTO", () => {
     const dto = RideUsecaseDTO.fromEntity(entity);
     expect(dto).toEqual(entity);
   });
+
+  test("Should create a valid list of RideUsecaseDTO", async () => {
+    const entity = await CreateRideEntityFixture.newEstimateRide();
+
+    const dto = RideUsecaseDTO.fromEntityList([entity]);
+    expect(dto[0]).toEqual(entity);
+  });
 });

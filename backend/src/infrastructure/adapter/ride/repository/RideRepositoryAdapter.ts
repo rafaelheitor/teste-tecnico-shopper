@@ -1,5 +1,8 @@
 import { Ride } from "@core/domain/ride/entity/Ride";
-import { RideRepositoryPort } from "@core/domain/ride/port/repository/RideRepositoryPort";
+import {
+  GetRideOptions,
+  RideRepositoryPort,
+} from "@core/domain/ride/port/repository/RideRepositoryPort";
 import { PrismaService } from "@infrastructure/adapter/ORM/PrismaService";
 
 export class RideRepositoryAdapter implements RideRepositoryPort {
@@ -20,5 +23,9 @@ export class RideRepositoryAdapter implements RideRepositoryPort {
     });
 
     if (saved) return ride;
+  }
+
+  async getSavedRides(options: GetRideOptions): Promise<Ride[]> {
+    throw Error("Method not implemented");
   }
 }

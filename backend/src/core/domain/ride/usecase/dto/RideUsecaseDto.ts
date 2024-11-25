@@ -35,6 +35,9 @@ export class RideUsecaseDTO {
   @Expose()
   options: RideDriverOptions[];
 
+  @Expose()
+  customer_id: string;
+
   routeResponse: object;
 
   public static fromEntity(payload: Ride, routeResponse?: object) {
@@ -46,5 +49,9 @@ export class RideUsecaseDTO {
     }
 
     return dto;
+  }
+
+  public static fromEntityList(payload: Ride[]) {
+    return payload.map((item) => this.fromEntity(item));
   }
 }
