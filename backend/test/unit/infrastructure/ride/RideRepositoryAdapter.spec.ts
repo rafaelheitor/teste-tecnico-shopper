@@ -48,8 +48,44 @@ describe("RideRepositoryAdapter", () => {
       date: new Date(),
     });
 
-    const saved = rideRepository.save(completedRide);
+    const saved = await rideRepository.save(completedRide);
 
     expect(saved).toBeDefined();
+  });
+
+  describe("getSavedRides", () => {
+    test("found rides", async () => {
+      jest.spyOn(prismaService.ride, "findMany").mockResolvedValue([
+        {
+          id: 1,
+          customer_id: "1",
+          origin: "Rua João Ribeiro, 100, kennedy, Alagoinhas",
+          destination: "Rua Elvira Dorea, centro, Alagoinhas",
+          distance: 2127,
+          driver: { id: 1, name: "Homer Simpson" },
+          duration: "6 minutos",
+          value: 5.71,
+          date: new Date(),
+        },
+      ]);
+
+      const savedRideList = await rideRepository.getSavedRides({
+        customer_id: "1",
+        driver_id: 1,
+      });
+
+      expect(savedRideList.length).toBeGreaterThanOrEqual(1);
+    });
+
+    test("not found rides", async () => {
+      jest.spyOn(prismaService.ride, "findMany").mockResolvedValue(undefined);
+
+      const savedRideList = await rideRepository.getSavedRides({
+        customer_id: "1",
+        driver_id: 1,
+      });
+
+      expect(savedRideList).not.toBeDefined();
+    });
   });
 });
