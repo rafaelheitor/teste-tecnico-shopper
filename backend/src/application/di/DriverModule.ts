@@ -1,3 +1,4 @@
+import { DriverController } from "@application/http-rest/controller/DriverController";
 import { InfrastructureDITokens } from "@core/common/di/InfrastructureDITokens";
 import { DriverDITokens } from "@core/domain/driver/di/DriverDITokens";
 import { GetDriverByIdService } from "@core/service/driver/GetDriverByIdService";
@@ -31,5 +32,6 @@ const providers: Provider[] = [
     DriverDITokens.GetDriverListUsecase,
     DriverDITokens.GetDriverByIdUsecase,
   ],
+  controllers: [DriverController],
 })
 export class DriverModule {}
