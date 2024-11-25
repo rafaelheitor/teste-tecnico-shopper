@@ -9,6 +9,7 @@ import { DriverModule } from "./DriverModule";
 import { RideController } from "@application/http-rest/controller/RideController";
 import { SaveRideService } from "@core/service/ride/SaveRideService";
 import { RideRepositoryAdapter } from "@infrastructure/adapter/ride/repository/RideRepositoryAdapter";
+import { GetRideHistoryService } from "@core/service/ride/GetRideHistoryService";
 
 const providers: Provider[] = [
   {
@@ -24,6 +25,15 @@ const providers: Provider[] = [
     provide: RideDITokens.SaveRideUsecase,
     useFactory: (rideRepository, getDriverByIdUsecase) =>
       new SaveRideService(rideRepository, getDriverByIdUsecase),
+    inject: [
+      RideDITokens.RideRepositoryPort,
+      DriverDITokens.GetDriverByIdUsecase,
+    ],
+  },
+  {
+    provide: RideDITokens.GetRideHistoryUsecase,
+    useFactory: (rideRepository, getDriverByIdUsecase) =>
+      new GetRideHistoryService(rideRepository, getDriverByIdUsecase),
     inject: [
       RideDITokens.RideRepositoryPort,
       DriverDITokens.GetDriverByIdUsecase,

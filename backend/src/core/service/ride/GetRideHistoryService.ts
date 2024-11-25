@@ -19,8 +19,7 @@ export class GetRideHistoryService implements GetRideHistoryUsecase {
 
     const savedRideList = await this.rideRepository.getSavedRides(port);
 
-    if (savedRideList.length == 0)
-      throw Exception.new({ code: Code.NO_RIDES_FOUND });
+    if (!savedRideList) throw Exception.new({ code: Code.NO_RIDES_FOUND });
 
     const dto = RideUsecaseDTO.fromEntityList(savedRideList);
     return SavedRideUsecaseDTO.new(dto);

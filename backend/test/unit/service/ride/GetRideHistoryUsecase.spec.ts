@@ -117,7 +117,7 @@ describe("GetRideHistoryUsecase", () => {
   });
 
   test("Should throw exception if none ride was found", async () => {
-    jest.spyOn(rideRepository, "getSavedRides").mockResolvedValue([]);
+    jest.spyOn(rideRepository, "getSavedRides").mockResolvedValue(undefined);
 
     await expect(
       getRideHistoryUsecase.execute({

@@ -2,10 +2,13 @@ import { Code } from "@core/common/code/Code";
 import { DriverDITokens } from "@core/domain/driver/di/DriverDITokens";
 import { DriverRepositoryPort } from "@core/domain/driver/port/repository/DriverRepositoryPort";
 import { RideDITokens } from "@core/domain/ride/di/RideDITokens";
+import { RideRepositoryPort } from "@core/domain/ride/port/repository/RideRepositoryPort";
 import { EstimateRidePort } from "@core/domain/ride/port/usecase/EstimateRideUsecasePort";
 import { SaveRidePort } from "@core/domain/ride/port/usecase/SaveRidePort";
 import { RideUsecaseDTO } from "@core/domain/ride/usecase/dto/RideUsecaseDto";
+import { SavedRideUsecaseDTO } from "@core/domain/ride/usecase/dto/SavedRideUsecaseDTO";
 import { EstimateRideUsecase } from "@core/domain/ride/usecase/EstimateRideUsecase";
+import { GetRideHistoryUsecase } from "@core/domain/ride/usecase/GetRideHistoryUsecase";
 import { SaveRideUsecase } from "@core/domain/ride/usecase/SaveRideUsecase";
 import { TestServer } from "@test/e2e/common/TestServer";
 import { CreateDriverEntityFixture } from "@test/fixtures/driver/CreateDriverEntityFixture";
@@ -16,7 +19,9 @@ describe("RideController", () => {
   let testServer: TestServer;
   let estimateRideUsecase: EstimateRideUsecase;
   let saveRideUsecase: SaveRideUsecase;
+  let getRideHistoryUsecase: GetRideHistoryUsecase;
   let driverRepository: DriverRepositoryPort;
+  let rideRepository: RideRepositoryPort;
 
   beforeAll(async () => {
     testServer = await TestServer.new();
@@ -29,15 +34,19 @@ describe("RideController", () => {
       RideDITokens.SaveRideUsecase
     );
 
+    getRideHistoryUsecase = testServer.testingModule.get<GetRideHistoryUsecase>(
+      RideDITokens.GetRideHistoryUsecase
+    );
+
     driverRepository = testServer.testingModule.get<DriverRepositoryPort>(
       DriverDITokens.DriverRepositoryPort
     );
 
-    await testServer.serverApplication.init();
-  });
+    rideRepository = testServer.testingModule.get<RideRepositoryPort>(
+      RideDITokens.RideRepositoryPort
+    );
 
-  beforeEach(() => {
-    jest.resetAllMocks();
+    await testServer.serverApplication.init();
   });
 
   describe("Estimate ride test cases", () => {
@@ -265,19 +274,88 @@ describe("RideController", () => {
       duration: "6 minutos",
       value: 5.71,
     };
+
     const mockDto = RideUsecaseDTO.fromEntity(
       await CreateRideEntityFixture.newCompletedRide()
     );
+
     jest.spyOn(saveRideUsecase, "execute").mockResolvedValue(mockDto);
+
     const response = await supertest(
       testServer.serverApplication.getHttpServer()
     )
       .patch("/ride/confirm")
       .send(body);
+
+    expect(response.statusCode).toBe(200);
     expect(response.body).toStrictEqual({
       code: 200,
       success: true,
       message: "Operação realizada com sucesso",
+    });
+  });
+
+  describe("GetRideHistoryUsecase", () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test("Should throw exception if none ride was found", async () => {
+      jest
+        .spyOn(rideRepository, "getSavedRides")
+        .mockResolvedValueOnce(undefined);
+
+      const result = await supertest(
+        testServer.serverApplication.getHttpServer()
+      ).get(`/ride/1?driver_id=1`);
+
+      expect(result.body).toEqual({
+        error_code: Code.NO_RIDES_FOUND.error_code,
+        error_description: Code.NO_RIDES_FOUND.message,
+      });
+    });
+
+    test("Should throw exception if driver was not found", async () => {
+      jest.spyOn(driverRepository, "getById").mockResolvedValue(undefined);
+
+      const result = await supertest(
+        testServer.serverApplication.getHttpServer()
+      ).get(`/ride/1?driver_id=1`);
+
+      expect(result.statusCode).toBe(404);
+      expect(result.body).toEqual({
+        error_code: Code.DRIVER_NOT_FOUND.error_code,
+        error_description: Code.DRIVER_NOT_FOUND.message,
+      });
+    });
+
+    test("Should throw exception if customer_id was not provided", async () => {
+      const result = await supertest(
+        testServer.serverApplication.getHttpServer()
+      ).get(`/ride`);
+
+      expect(result.body).toEqual({
+        error_code: Code.BAD_REQUEST_ERROR.error_code,
+        error_description: Code.BAD_REQUEST_ERROR.message,
+      });
+    });
+
+    test("Should return list of saved Rides", async () => {
+      const mockEntity = await CreateRideEntityFixture.newCompletedRide();
+      const rideDTO = RideUsecaseDTO.fromEntity(mockEntity);
+
+      const expectedDTO = SavedRideUsecaseDTO.new([rideDTO]);
+
+      jest
+        .spyOn(getRideHistoryUsecase, "execute")
+        .mockResolvedValue(expectedDTO);
+
+      const result = await supertest(
+        testServer.serverApplication.getHttpServer()
+      ).get(`/ride/1?driver_id=1`);
+
+      expect(result.statusCode).toBe(200);
+      expect(result.body).toBeDefined();
     });
   });
 });

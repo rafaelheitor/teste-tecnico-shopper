@@ -33,12 +33,12 @@ export class RideUsecaseDTO {
   value: number;
 
   @Expose()
-  options: RideDriverOptions[];
+  options?: RideDriverOptions[];
 
   @Expose()
-  customer_id: string;
+  customer_id?: string;
 
-  routeResponse: object;
+  routeResponse?: object;
 
   public static fromEntity(payload: Ride, routeResponse?: object) {
     const dto = plainToInstance(RideUsecaseDTO, payload);

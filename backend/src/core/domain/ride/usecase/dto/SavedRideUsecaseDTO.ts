@@ -16,9 +16,6 @@ export class SavedRideUsecaseDTO {
         duration: item.duration,
         driver: { ...item.driver },
         value: item.value,
-        customer_id: undefined,
-        options: undefined,
-        routeResponse: undefined,
       })));
   }
 
