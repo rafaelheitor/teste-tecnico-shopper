@@ -8,6 +8,9 @@ const initialState: Ride = {
   distance: "",
   duration: "",
   options: [],
+  customerId: "",
+  originString: "",
+  destinationString: "",
 };
 
 export const rideSlice = createSlice({
@@ -39,6 +42,18 @@ export const rideSlice = createSlice({
     setOptions(state, action: PayloadAction<Driver[]>) {
       action.payload.forEach((item) => state.options.push(item));
     },
+
+    setOriginString(state, action: PayloadAction<string>) {
+      state.originString = action.payload;
+    },
+
+    setDestinationString(state, action: PayloadAction<string>) {
+      state.destinationString = action.payload;
+    },
+
+    setCustomerId(state, action: PayloadAction<string>) {
+      state.customerId = action.payload;
+    },
   },
 });
 
@@ -48,4 +63,7 @@ export const {
   setDistance,
   setDuration,
   setOptions,
+  setOriginString,
+  setCustomerId,
+  setDestinationString,
 } = rideSlice.actions;

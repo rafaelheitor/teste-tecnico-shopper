@@ -4,10 +4,13 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import rideUsecases from "@infrastructure/ride/RideUsecases";
 import { useAppDispatch } from "@presentation/hooks/UseDispatch";
 import {
+  setCustomerId,
   setDestination,
+  setDestinationString,
   setDuration,
   setOptions,
   setOrigin,
+  setOriginString,
 } from "@core/domain/ride/store/slice";
 import { useAppSelector } from "@presentation/hooks/UseAppSelector";
 import { useRouter } from "next/navigation";
@@ -33,13 +36,16 @@ const TravelRequestForm: React.FC = () => {
       customer_id: userId,
     });
 
-    if (response) {
+    if (response.success) {
       const { origin, destination, options, duration } = response;
       dispatch(setOrigin(origin));
       dispatch(setDestination(destination));
       dispatch(setDuration(destination));
       dispatch(setDuration(duration));
       dispatch(setOptions(options));
+      dispatch(setOriginString(formOrigin));
+      dispatch(setDestinationString(formDestination));
+      dispatch(setCustomerId(userId));
       router.push("/ride-options");
     }
   };

@@ -11,4 +11,7 @@ export type Ride = {
   distance: string;
   duration: string;
   options: Driver[];
+  originString: string;
+  destinationString: string;
+  customerId: string;
 };

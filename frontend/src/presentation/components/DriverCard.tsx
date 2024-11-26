@@ -28,14 +28,21 @@ const DriverCard: React.FC<DriverCardProps> = ({
   return (
     <Card
       sx={{
-        maxWidth: 260,
+        width: "100%",
         margin: "auto",
         marginBottom: 2,
         boxShadow: 4,
         borderRadius: 3,
-        padding: 2,
+        marginRight: 1,
+        overflowY: "scroll",
+        "&::-webkit-scrollbar": {
+          width: 0,
+          display: "none",
+        },
+        msOverflowStyle: "none",
+        scrollbarWidth: "none",
         backgroundColor: "background.paper",
-        height: "50%",
+        height: "100%",
       }}
     >
       <CardContent>
