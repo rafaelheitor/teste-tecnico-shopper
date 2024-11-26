@@ -1,5 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import {
+  HttpClient,
+  HttpRequest,
+  HttpResponse,
+} from "@core/common/protocol/HttpClient";
 import axios, { AxiosResponse } from "axios";
-import { HttpClient, HttpRequest, HttpResponse } from "./HttpClient";
 import { toast } from "react-toastify";
 
 class AxiosHttpClient implements HttpClient {

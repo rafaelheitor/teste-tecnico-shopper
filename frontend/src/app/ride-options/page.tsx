@@ -1,21 +1,20 @@
-import React from "react";
+"use client";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useEffect } from "react";
 import { Container, Typography, Box, Grid } from "@mui/material";
-import DriverCard, { Driver } from "./DriverCard";
+import DriverCard from "../../presentation/components/DriverCard";
+import { useAppSelector } from "@presentation/hooks/UseAppSelector";
+import ReduxProvider from "@presentation/components/ReduxProvider";
+import { ToastContainer } from "react-toastify";
+import { useRouter } from "next/navigation";
 
-type LatLong = { latitude: number; longitude: number };
-
-interface RideOptionsScreenProps {
-  origin: LatLong;
-  destination: LatLong;
-  driverList: Driver[];
-}
-
-const RideOptionsScreen: React.FC<RideOptionsScreenProps> = ({
-  origin,
-  destination,
-  driverList,
-}) => {
+const RideOptionsScreen = () => {
   const apiKey = "";
+  const driverList = useAppSelector((state) => state.ride.options);
+  const origin = useAppSelector((state) => state.ride.origin);
+  const destination = useAppSelector((state) => state.ride.destination);
+  const duration = useAppSelector((state) => state.ride.duration);
+  const router = useRouter();
 
   const mapUrl =
     `https://maps.googleapis.com/maps/api/staticmap?` +
@@ -24,6 +23,12 @@ const RideOptionsScreen: React.FC<RideOptionsScreenProps> = ({
     `markers=color:red|label:B|${destination.latitude},${destination.longitude}&` +
     `path=color:0x0000ff|weight:5|${origin.latitude},${origin.longitude}|${destination.latitude},${destination.longitude}&` +
     `key=${apiKey}`;
+
+  useEffect(() => {
+    if (origin.latitude === 0) {
+      router.push("/");
+    }
+  }, [origin.latitude, router]);
 
   return (
     <Container maxWidth="md" sx={{ mt: 4, textAlign: "center" }}>
@@ -52,7 +57,11 @@ const RideOptionsScreen: React.FC<RideOptionsScreenProps> = ({
           >
             {driverList.map((driver) => (
               <Grid item xs={12} sm={6} md={4} key={driver.id}>
-                <DriverCard driver={driver} onChoose={(chosenDriver) => {}} />
+                <DriverCard
+                  driver={driver}
+                  duration={duration}
+                  onChoose={(chosenDriver) => {}}
+                />
               </Grid>
             ))}
           </Grid>
@@ -62,4 +71,13 @@ const RideOptionsScreen: React.FC<RideOptionsScreenProps> = ({
   );
 };
 
-export default RideOptionsScreen;
+export default function Page() {
+  return (
+    <div>
+      <ReduxProvider>
+        <RideOptionsScreen />
+        <ToastContainer />
+      </ReduxProvider>
+    </div>
+  );
+}

@@ -1,6 +1,5 @@
 :root {
   --background: #ffffff;
-  --foreground: #171717;
   --accent: #000000; /* Primary accent, often bold black */
   --muted: #888888; /* Muted text or borders */
   --spacing-unit: 8px; /* Base spacing unit */
@@ -11,15 +10,6 @@
   --font-size-large: 1.25rem;
 
   --transition-speed: 0.3s; /* Smooth animations */
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --accent: #ffffff;
-    --muted: #666666;
-  }
 }
 
 html,

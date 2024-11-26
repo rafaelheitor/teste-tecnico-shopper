@@ -1,42 +1,46 @@
 "use client";
 import { useState, FormEvent } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import AxiosHttpClient from "@/infrastructure/HttpClient/AxiosHttpClient";
-import RideOptionsScreen from "@/components/RideOptionsScreen";
-
-type LatLong = { latitude: number; longitude: number };
+import rideUsecases from "@infrastructure/ride/RideUsecases";
+import { useAppDispatch } from "@presentation/hooks/UseDispatch";
+import {
+  setDestination,
+  setDuration,
+  setOptions,
+  setOrigin,
+} from "@core/domain/ride/store/slice";
+import { useAppSelector } from "@presentation/hooks/UseAppSelector";
+import { useRouter } from "next/navigation";
 
 const TravelRequestForm: React.FC = () => {
+  const dispatch = useAppDispatch();
   const [userId, setUserId] = useState<string>("");
-  const [origin, setOrigin] = useState<string>("");
-  const [destination, setDestination] = useState<string>("");
-  const [driverList, setDriverList] = useState<[]>([]);
-  const [location, setLocation] = useState<{
-    origin: LatLong;
-    destination: LatLong;
-  } | null>(null);
+  const [formOrigin, setFormOrigin] = useState<string>("");
+  const [formDestination, setFormDestination] = useState<string>("");
+  const info = {
+    origin: useAppSelector((state) => state.ride.origin),
+    destination: useAppSelector((state) => state.ride.destination),
+    duration: useAppSelector((state) => state.ride.duration),
+  };
+  const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLocation(null);
 
-    const response = await AxiosHttpClient.request({
-      url: "http://localhost:8080/ride/estimate",
-      body: {
-        customer_id: userId,
-        origin,
-        destination,
-      },
-      method: "post",
+    const response = await rideUsecases.estimateRideUsecase({
+      origin: formOrigin,
+      destination: formDestination,
+      customer_id: userId,
     });
 
-    if (response.body?.success) {
-      const { origin, destination, options } = response.body;
-      setDriverList(options);
-      setLocation({
-        origin,
-        destination,
-      });
+    if (response) {
+      const { origin, destination, options, duration } = response;
+      dispatch(setOrigin(origin));
+      dispatch(setDestination(destination));
+      dispatch(setDuration(destination));
+      dispatch(setDuration(duration));
+      dispatch(setOptions(options));
+      router.push("/ride-options");
     }
   };
 
@@ -50,13 +54,7 @@ const TravelRequestForm: React.FC = () => {
         backgroundColor: "#f4f4f4",
       }}
     >
-      {location ? (
-        <RideOptionsScreen
-          origin={location.origin}
-          destination={location.destination}
-          driverList={driverList}
-        />
-      ) : (
+      {info.origin.latitude != 0 ? null : (
         <Box
           component="form"
           onSubmit={handleSubmit}
@@ -99,8 +97,8 @@ const TravelRequestForm: React.FC = () => {
             label="Origem"
             variant="outlined"
             fullWidth
-            value={origin}
-            onChange={(e) => setOrigin(e.target.value)}
+            value={formOrigin}
+            onChange={(e) => setFormOrigin(e.target.value)}
             sx={{
               backgroundColor: "rgba(255, 255, 255, 0.1)",
               color: "black",
@@ -111,8 +109,8 @@ const TravelRequestForm: React.FC = () => {
             label="Destino"
             variant="outlined"
             fullWidth
-            value={destination}
-            onChange={(e) => setDestination(e.target.value)}
+            value={formDestination}
+            onChange={(e) => setFormDestination(e.target.value)}
             sx={{
               backgroundColor: "rgba(255, 255, 255, 0.1)",
               color: "black",
