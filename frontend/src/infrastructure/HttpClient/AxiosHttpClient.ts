@@ -44,5 +44,5 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-export default new AxiosHttpClient();
+const exported = new AxiosHttpClient();
+export default exported;

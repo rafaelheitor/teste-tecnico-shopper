@@ -12,7 +12,7 @@ import Footer from "@presentation/components/Footer";
 import rideUsecases from "@infrastructure/ride/RideUsecases";
 
 const RideOptionsScreen = () => {
-  const apiKey = "";
+  const apiKey = process.env.GOOGLE_API_KEY;
   const driverList = useAppSelector((state) => state.ride.options);
   const origin = useAppSelector((state) => state.ride.origin);
   const destination = useAppSelector((state) => state.ride.destination);

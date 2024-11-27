@@ -1,0 +1,3 @@
+# Example of .dockerignore that allows next.config.js
+node_modules
+.env

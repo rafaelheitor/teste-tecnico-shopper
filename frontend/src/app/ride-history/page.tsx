@@ -52,6 +52,7 @@ const RidePage: React.FC = () => {
       const filteredRides = await rideUsecases.getRideHistoryUsecase(options);
       setRides(filteredRides.rides);
     } catch (error) {
+      console.log(error);
       setRides([]);
     } finally {
       setLoading(false);

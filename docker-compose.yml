@@ -13,6 +13,23 @@ services:
       - db
     entrypoint: ./docker-entrypoint.sh
   
+  frontend:
+    container_name: 'frontend'
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+    networks:
+      - teste-shopper
+    ports:
+      - 80:80
+    env_file:
+      - ./.env
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      - NODE_ENV=production 
+  
   db:
     image: postgres:13-alpine
     container_name: db
