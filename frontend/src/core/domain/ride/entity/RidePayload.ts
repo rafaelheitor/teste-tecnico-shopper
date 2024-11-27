@@ -8,7 +8,7 @@ type Coordinate = {
 export type Ride = {
   origin: Coordinate;
   destination: Coordinate;
-  distance: string;
+  distance: number;
   duration: string;
   options: Driver[];
   originString: string;

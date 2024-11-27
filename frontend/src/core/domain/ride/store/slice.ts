@@ -5,7 +5,7 @@ import { Ride } from "../entity/RidePayload";
 const initialState: Ride = {
   origin: { latitude: 0, longitude: 0 },
   destination: { latitude: 0, longitude: 0 },
-  distance: "",
+  distance: 0,
   duration: "",
   options: [],
   customerId: "",
@@ -31,7 +31,7 @@ export const rideSlice = createSlice({
       state.destination = action.payload;
     },
 
-    setDistance(state, action: PayloadAction<string>) {
+    setDistance(state, action: PayloadAction<number>) {
       state.distance = action.payload;
     },
 

@@ -25,7 +25,7 @@ class RideUsecases {
       body: {
         ...options,
       },
-      method: "post",
+      method: "patch",
     });
 
     return response.body;
@@ -38,12 +38,14 @@ class RideUsecases {
       ? baseURL + `?driver_id=${options.driver_id}`
       : baseURL;
 
+    console.log(url);
+
     const response = await this.httpClient.request({
       url,
       body: {
         ...options,
       },
-      method: "post",
+      method: "get",
     });
 
     return response.body;
