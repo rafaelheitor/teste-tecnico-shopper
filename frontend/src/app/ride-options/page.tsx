@@ -12,7 +12,7 @@ import Footer from "@presentation/components/Footer";
 import rideUsecases from "@infrastructure/ride/RideUsecases";
 
 const RideOptionsScreen = () => {
-  const apiKey = "AIzaSyA_4CLAi4cxjcwUz1R9jrFfQ1RFD3P6AU4";
+  const apiKey = "";
   const driverList = useAppSelector((state) => state.ride.options);
   const origin = useAppSelector((state) => state.ride.origin);
   const destination = useAppSelector((state) => state.ride.destination);
@@ -152,6 +152,8 @@ const RideOptionsScreen = () => {
                       driver: { id: chosenDriver.id, name: chosenDriver.name },
                       value: chosenDriver.value,
                     });
+
+                    router.push("/ride-history");
                   }}
                 />
               ))}

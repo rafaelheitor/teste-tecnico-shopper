@@ -6,6 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 function Header() {
   const router = useRouter();
@@ -26,7 +27,7 @@ function Header() {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Sua Viagem
+          <Link href={"/"}>Sua Viagem</Link>
         </Typography>
         <Button color="inherit" onClick={handleRouteChange}>
           Histórico de Viagens
