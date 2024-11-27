@@ -10,9 +10,9 @@ import { useRouter } from "next/navigation";
 import Header from "@presentation/components/Header";
 import Footer from "@presentation/components/Footer";
 import rideUsecases from "@infrastructure/ride/RideUsecases";
+import { GOOGLE_API_KEY } from "@core/common/constants/Constants";
 
 const RideOptionsScreen = () => {
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
   const driverList = useAppSelector((state) => state.ride.options);
   const origin = useAppSelector((state) => state.ride.origin);
   const destination = useAppSelector((state) => state.ride.destination);
@@ -43,7 +43,7 @@ const RideOptionsScreen = () => {
     `markers=color:blue|label:A|${origin.latitude},${origin.longitude}&` +
     `markers=color:red|label:B|${destination.latitude},${destination.longitude}&` +
     `path=color:0x0000ff|weight:5|${origin.latitude},${origin.longitude}|${destination.latitude},${destination.longitude}&` +
-    `key=${apiKey}`;
+    `key=${GOOGLE_API_KEY}`;
 
   if (!isClient) return null;
 
