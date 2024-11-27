@@ -1,7 +1,7 @@
-import { API_URL } from "@core/common/constants/Constants";
 import AxiosHttpClient from "../HttpClient/AxiosHttpClient";
 import { HttpClient } from "../../core/common/protocol/HttpClient";
 import { Driver } from "@core/domain/driver/entity/DriverPayload";
+import { API_URL } from "@core/common/constants/Constants";
 
 class DriverUsecases {
   private readonly httpClient: HttpClient = AxiosHttpClient;

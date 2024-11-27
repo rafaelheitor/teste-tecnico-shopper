@@ -1,6 +1,6 @@
 services:
   backend:
-    container_name: 'backend'  
+    container_name: 'backend'
     build: ./backend/
     networks:
       - teste-shopper
@@ -12,7 +12,7 @@ services:
     depends_on:
       - db
     entrypoint: ./docker-entrypoint.sh
-  
+
   frontend:
     container_name: 'frontend'
     build:
@@ -28,8 +28,9 @@ services:
     depends_on:
       - backend
     environment:
-      - NODE_ENV=production 
-  
+      - NODE_ENV=production
+      - NEXT_PUBLIC_GOOGLE_API_KEY=${GOOGLE_API_KEY}
+
   db:
     image: postgres:13-alpine
     container_name: db
@@ -48,7 +49,8 @@ volumes:
   backend:
   postgres_data:
 
+
 networks:
- teste-shopper:
+  teste-shopper:
     name: teste-shopper
     driver: bridge

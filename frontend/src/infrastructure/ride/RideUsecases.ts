@@ -38,8 +38,6 @@ class RideUsecases {
       ? baseURL + `?driver_id=${options.driver_id}`
       : baseURL;
 
-    console.log(url);
-
     const response = await this.httpClient.request({
       url,
       body: {
