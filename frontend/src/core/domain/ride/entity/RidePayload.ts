@@ -15,3 +15,14 @@ export type Ride = {
   destinationString: string;
   customerId: string;
 };
+
+export type SavedRide = {
+  id: number;
+  date: string;
+  origin: string;
+  destination: string;
+  distance: number;
+  duration: string;
+  driver: Driver;
+  value: number;
+};

@@ -19,6 +19,7 @@ import rideUsecases from "@infrastructure/ride/RideUsecases";
 import { Driver } from "@core/domain/driver/entity/DriverPayload";
 import { SavedRide } from "@core/domain/ride/entity/RidePayload";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const RidePage: React.FC = () => {
   const [rides, setRides] = useState<SavedRide[]>([]);
@@ -107,7 +108,7 @@ const RidePage: React.FC = () => {
           </Button>
         </Box>
 
-        {rides.length > 0 ? (
+        {rides != undefined && rides.length > 0 ? (
           rides.map((ride) => (
             <Card
               key={ride.id}
