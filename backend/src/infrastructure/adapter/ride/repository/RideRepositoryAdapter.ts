@@ -29,8 +29,7 @@ export class RideRepositoryAdapter implements RideRepositoryPort {
     const where = this.createWhereObject(options);
 
     const foundRides = await this.prismaService.ride.findMany(where);
-
-    if (!foundRides) return undefined;
+    if (foundRides.length == 0) return undefined;
 
     const mappedResult = await Promise.all(
       foundRides.map((item) =>
